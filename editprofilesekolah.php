@@ -19,7 +19,7 @@ if(isset($_GET['id_kepsek'])){
 ?>
 
 <!-- button triger -->
-<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Tambah Data</button>
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Ubah Data</button>
 <!-- button triger -->
 
 <!-- DataTales Example -->
@@ -29,14 +29,11 @@ if(isset($_GET['id_kepsek'])){
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-bordered" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nama</th>
-            <th>Alamat</th>
             <th>Logo</th>
-            <th>Aksi</th>
+            <th>Data</th>
           </tr>
         </thead>
         
@@ -49,14 +46,17 @@ if(isset($_GET['id_kepsek'])){
 
           ?>
           <tr>
-            <td><?= $no++ ?></td>
-            <td><?php echo $res['nama_profile']; ?></td>
-            <td><?php echo $res['alamat']; ?></td>
-            <td><img src="img/<?php echo $res['logo'] ?>" width="60" height="60"></td>
+            <td><img src="img/<?php echo $res['logo'] ?>" width="200" height="200"></td>
             <td>
-              <a href = "editdatakepsek.php?id_profile=<?= $res['id_profile'] ?>" class = "btn btn-sm btn-danger" onclick = "return confirm ('Apakah yakin ingin menghapus data?')">Hapus</a>
-              <a href = "#" class = "view_data btn btn-sm btn-warning"  data-bs-toggle="modal" data-bs-target="#myModal" id="<?php echo $res['id_profile']; ?>">Edit</a>
-            </td> 
+            <form action="" method="POST" enctype="multipart/form-data">
+               <input type="hidden" required name="id_profile" value="<?= $res['id_profile'] ?>"class="form-control mb-2">
+              <input type="text" required name="nama_profile" value="<?= $res['nama_profile'] ?>" placeholder="Nama Yayasan/sekolah" class="form-control mb-2" disabled>
+              <input type="text" required name="alamat" value="<?= $res['hp'] ?>" placeholder="Nomer Telepon"  class="form-control mb-2" disabled>
+              <input type="text" required name="telp" value="<?= $res['alamat'] ?>" placeholder="Alamat" class="form-control mb-2" disabled>
+              <!--<input type="file" required name="foto" class="form-control mb-2"> -->
+              
+              </form>
+									</td>
           </tr>
         <?php endwhile; ?>
       </tbody>
@@ -64,6 +64,8 @@ if(isset($_GET['id_kepsek'])){
   </div>
 </div>
 </div>
+
+
 
 <!-- Modal Tambah Data -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -76,6 +78,7 @@ if(isset($_GET['id_kepsek'])){
       <div class="modal-body">
         <form action="" method="POST" enctype="multipart/form-data">
           <input type="text" required name="nama_profile" placeholder="Nama Yayasan/sekolah" class="form-control mb-2">
+          <input type="text" required name="hp" placeholder="Nomer telpon" class="form-control mb-2">
           <input type="text" required name="alamat" placeholder="alamat" class="form-control mb-2">
           <input type="file" required name="foto" class="form-control mb-2">
          
@@ -83,7 +86,7 @@ if(isset($_GET['id_kepsek'])){
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="Submit" name="simpan" class="btn btn-primary">Simpan</button>
+          <button type="Submit" name="simpan" class="btn btn-primary" >Simpan</button>
         </form>
       </div>
     </div>
@@ -111,6 +114,7 @@ if(isset($_GET['id_kepsek'])){
 if(isset($_POST['simpan'])){
 $nama = $_POST['nama_profile'];
 $alamat = $_POST['alamat'];
+$hp = $_POST['hp'];
  
 $rand = rand();
 $ekstensi =  array('png','jpg','jpeg','gif');
@@ -121,15 +125,24 @@ $ext = pathinfo($filename, PATHINFO_EXTENSION);
 if(!in_array($ext,$ekstensi) ) {
 	header("location:index.php?alert=gagal_ekstensi");
 }else{
-	if($ukuran < 1044070){		
+	if($ukuran < 1044070){
+    //hapus dulu datanya	
+    $query  = "SELECT * FROM profil";
+    $exec   = mysqli_query($conn, $query);
+    $res = mysqli_fetch_assoc($exec);
+    
+      $id_profile = $res['id_profile'];
+      $exec     = mysqli_query($conn, "DELETE FROM profil WHERE id_profile='$id_profile'");
+    //Input data Baru
 		$xx = $rand.'_'.$filename;
 		move_uploaded_file($_FILES['foto']['tmp_name'], 'img/'.$rand.'_'.$filename);
-		mysqli_query($conn, "INSERT INTO profil VALUES(Null,'$nama','$alamat','$xx')");
+		mysqli_query($conn, "INSERT INTO profil VALUES(Null,'$nama','$hp','$alamat','$xx')");
 		echo "<script>alert('data kepala sekolah berhasil disimpan')
     document.location = 'editdatakepsek.php'</script>;
     ";
+    
 	}else{
-		header("location:index.php?alert=gagak_ukuran");
+		header("location:index.php?alert=gagal_ukuran");
 }
 
 
@@ -167,26 +180,46 @@ if(!in_array($ext,$ekstensi) ) {
 
 <?php
 if (isset($_POST['edit'])){
-  $id_kepsek   = $_POST['id_kepsek'];
-  $nama_kepsek = htmlentities(strip_tags(ucwords($_POST['nama_kepsek'])));
-  $periode = htmlentities(strip_tags($_POST['periode']));
-  
-  
-  $query        = "UPDATE kepala_sekolah SET 
-  nama_kepsek   = '$nama_kepsek',
-  periode       = '$periode' WHERE id_kepsek = '$id_kepsek' ";
-  $exec         = mysqli_query($conn, $query);
-  if($exec){
-    echo "<script>alert('data kepala sekolah berhasil diedit')
-    document.location = 'editdatakepsek.php'</script>;
-    "
-    ;
+  $id_profile   = $_POST['id_profile'];
+  $nama = $_POST['nama_profile'];
+  $hp = $_POST['nama_profile'];
+  $alamat = $_POST['alamat'];
+  $rand = rand();
+$ekstensi =  array('png','jpg','jpeg','gif');
+$filename = $_FILES['foto']['name'];
+$ukuran = $_FILES['foto']['size'];
+$ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-  }else {
-   echo "<script>alert('data kepala sekolah gagal diedit')
-   document.location = 'editdatakepsek.php'</script>;
-   "
-   ;
+if(!in_array($ext,$ekstensi) ) {
+	header("location:index.php?alert=gagal_ekstensi");
+}else{
+	if($ukuran < 1044070){		
+		$xx = $rand.'_'.$filename;
+		move_uploaded_file($_FILES['foto']['tmp_name'], 'img/'.$rand.'_'.$filename);
+		mysqli_query($conn, "UPDATE profil SET WHERE id_profile = '$id_profile',('$nama','$alamat','$xx')");
+		echo "<script>alert('data kepala sekolah berhasil disimpan')
+    document.location = 'editdatakepsek.php'</script>;
+    ";
+	}else{
+		header("location:index.php?alert=gagak_ukuran");
+}
+  
+  
+  //$query        = "UPDATE kepala_sekolah SET 
+  //nama_kepsek   = '$nama_kepsek',
+  //periode       = '$periode' WHERE id_kepsek = '$id_kepsek' ";
+  //$exec         = mysqli_query($conn, $query);
+  //if($exec){
+    //echo "<script>alert('data kepala sekolah berhasil diedit')
+    //document.location = 'editdatakepsek.php'</script>;
+   // "
+   // ;
+
+  //}else {
+   //echo "<script>alert('data kepala sekolah gagal diedit')
+   //document.location = 'editdatakepsek.php'</script>;
+   //"
+   //;
  }
 
 }

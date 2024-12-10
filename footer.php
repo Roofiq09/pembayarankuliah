@@ -8,7 +8,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Zanuar Didik Bintoro</span>
+            <span>Copyright &copy; Muhamad Roofiq</span>
           </div>
         </div>
       </footer>

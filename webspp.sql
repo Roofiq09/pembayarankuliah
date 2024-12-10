@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Waktu pembuatan: 10 Des 2024 pada 09.42
+-- Waktu pembuatan: 10 Des 2024 pada 16.38
 -- Versi server: 8.3.0
 -- Versi PHP: 8.2.18
 
@@ -129,7 +129,14 @@ CREATE TABLE IF NOT EXISTS `kepala_sekolah` (
   `nama_kepsek` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `periode` int NOT NULL,
   PRIMARY KEY (`id_kepsek`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data untuk tabel `kepala_sekolah`
+--
+
+INSERT INTO `kepala_sekolah` (`id_kepsek`, `nama_kepsek`, `periode`) VALUES
+(2, 'Dadan', 2024);
 
 -- --------------------------------------------------------
 
@@ -177,17 +184,18 @@ DROP TABLE IF EXISTS `profil`;
 CREATE TABLE IF NOT EXISTS `profil` (
   `id_profile` int NOT NULL AUTO_INCREMENT,
   `nama_profile` varchar(100) NOT NULL,
+  `hp` varchar(30) NOT NULL,
   `alamat` varchar(100) NOT NULL,
   `logo` varchar(100) NOT NULL,
   PRIMARY KEY (`id_profile`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data untuk tabel `profil`
 --
 
-INSERT INTO `profil` (`id_profile`, `nama_profile`, `alamat`, `logo`) VALUES
-(3, 'Budi Mulya', 'Jonggol', '1537005890_Promo XL7.jpg');
+INSERT INTO `profil` (`id_profile`, `nama_profile`, `hp`, `alamat`, `logo`) VALUES
+(14, 'Suzuki RMK', '08977527549', 'Kebon Jeruk', '383031223_png.png');
 
 -- --------------------------------------------------------
 
