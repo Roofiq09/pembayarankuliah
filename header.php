@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include 'auth.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -109,11 +109,12 @@ session_start();
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="editdatasiswa.php">Data Siswa</a>
             <a class="collapse-item" href="editdatakelas.php">Data Kelas</a>
-            <a class="collapse-item" href="kenaikankelas.php">Kenaikan Kelas</a>
+           <!-- <a class="collapse-item" href="kenaikankelas.php">Kenaikan Kelas</a>-->
             <a class="collapse-item" href="editdatajurusan.php">Data Jurusan</a>
             <a class="collapse-item" href="editdataangkatan.php">Data Angkatan</a>
             <a class="collapse-item" href="editdataadmin.php">Data Admin</a>
             <a class="collapse-item" href="editdatakepsek.php">Data Kepala Sekolah</a>
+            <a class="collapse-item" href="editprofilesekolah.php">Profile</a>
           </div>
         </div>
       </li>
@@ -172,18 +173,18 @@ session_start();
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="logout.php" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['nama_admin'] ?></span>
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['nama_admin'] ?></span>
                 <img class="img-profile rounded-circle" src="img/undraw_female_avatar_w3jk.svg">
               </a>
                <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"aria-labelledby="userDropdown">
-                  <a class="dropdown-item" href="editprofil.php?id_admin=<?= $_SESSION['admin']?>">
+                <!-- <a class="dropdown-item" href="editprofil.php?id_admin=<?= $_SESSION['id_admin']?>">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
-                  </a>
+                  </a> -->
              
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="index.php" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>

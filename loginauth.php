@@ -13,8 +13,9 @@ if(isset($_POST['login'])) {
         $exec = mysqli_query($conn,$query);
             if(mysqli_num_rows($exec) !== 0) {
             $res = mysqli_fetch_assoc($exec);
-            $_SESSION['admin'] = $res['id_admin'];
-            $_SESSION['nama_admin'] = $res['nama_admin'];
+            //$_SESSION['admin'] = $res['id_admin'];
+            $_SESSION['nama_admin'] = $user;
+            //echo $_SESSION['nama_admin'];
             header('location: beranda.php');
 
     }else {
